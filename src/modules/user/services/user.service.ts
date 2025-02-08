@@ -49,4 +49,13 @@ export class UserService implements IUserService {
   async isUserExistByEmail(email: string): Promise<boolean> {
     return await this.userRepository.isExist({ email });
   }
+
+  async getUsrByEmail(email: string): Promise<User | null> {
+    try {
+      const user = await this.userRepository.getOne({ email });
+      return user ?? null;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 }

@@ -1,5 +1,3 @@
-import { User } from 'src/modules/user/entities/user.entity';
-
 export interface ITokenUser {
   sub: string;
   email?: string;
@@ -8,13 +6,9 @@ export interface ITokenUser {
 /**
  * JWT token response
  */
-export interface ITokenResponse {
+export interface IToken {
   access_token: string;
   access_token_expires_in: string;
-  refresh_token: string;
-  refresh_token_expires_in: string;
-  sub?: string;
-  user?: User;
 }
 
 /**

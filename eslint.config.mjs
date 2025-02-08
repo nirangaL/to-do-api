@@ -29,7 +29,6 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'off',
       '@typescript-eslint/explicit-function-return-type': 'error',
       '@typescript-eslint/no-empty-interface': 'off',
       '@typescript-eslint/no-inferrable-types': 'off',
