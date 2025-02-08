@@ -58,4 +58,13 @@ export class UserService implements IUserService {
       throw new InternalServerErrorException(error);
     }
   }
+
+  async getUserById(id: string): Promise<User | null> {
+    try {
+      const user = await this.userRepository.getOneById(id);
+      return user ?? null;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 }

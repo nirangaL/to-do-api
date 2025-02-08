@@ -1,8 +1,6 @@
 import { BaseEntity } from 'src/core/entities/base.entity';
 import {
   DeepPartial,
-  DeleteResult,
-  EntityManager,
   FindManyOptions,
   FindOneOptions,
   UpdateResult,
@@ -10,9 +8,17 @@ import {
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 export interface IBaseRepository<T extends Partial<BaseEntity>> {
-  set manager(manager: EntityManager);
-  get manager(): EntityManager;
-  unsetManager(): void;
+  /**
+   * Create entity and return
+   * @param data
+   */
+  create(data: DeepPartial<T>): T;
+
+  /**
+   * Save entity
+   * @param data
+   */
+  save(data: DeepPartial<T>): Promise<T>;
 
   /**
    * Get all data with count
@@ -84,18 +90,8 @@ export interface IBaseRepository<T extends Partial<BaseEntity>> {
   ): Promise<T | null>;
 
   /**
-   * Delete entity
-   * @param id
-   */
-  remove(id: string): Promise<DeleteResult>;
-
-  /**
    * Soft delete
    * @param id
    */
   softDelete(id: string): Promise<UpdateResult>;
-
-  transaction<E = T>(
-    operation: (entityManager: EntityManager) => Promise<E>,
-  ): Promise<E>;
 }

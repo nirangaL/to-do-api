@@ -1,10 +1,8 @@
 import {
   DeepPartial,
-  DeleteResult,
   EntityManager,
   FindManyOptions,
   FindOneOptions,
-  FindOperator,
   Repository,
   UpdateResult,
 } from 'typeorm';
@@ -15,49 +13,35 @@ import { BaseEntity } from '../entities/base.entity';
 export abstract class BaseRepository<T extends Partial<BaseEntity>>
   implements IBaseRepository<T>
 {
-  private _manager?: EntityManager;
   private entity: Repository<T>;
   protected constructor(entity: Repository<T>) {
     this.entity = entity;
   }
 
-  set manager(manager: EntityManager) {
-    this._manager = manager;
-  }
-
   get manager(): EntityManager {
-    if (this._manager) {
-      return this._manager;
-    }
     return this.entity.manager;
-  }
-
-  unsetManager(): void {
-    this._manager = undefined;
   }
 
   get repository(): Repository<T> {
     return this.manager.getRepository(this.entity.target);
   }
 
-  async transaction<E = T>(
-    operation: (entityManager: EntityManager) => Promise<E>,
-  ): Promise<E> {
-    return this.entity.manager.transaction(operation);
+  /**
+   * Create entity
+   * @param data
+   * @returns
+   */
+  create(data: DeepPartial<T>): T {
+    return this.repository.create(data);
   }
 
-  fieldToWhereClause(
-    field: string,
-    search: FindOperator<string | number>,
-  ): FindManyOptions['where'] {
-    if (field?.match(/\./)) {
-      const fieldPaths = field.split(/\.(.*)/);
-      return {
-        [fieldPaths[0]]: this.fieldToWhereClause(fieldPaths[1], search),
-      };
-    } else {
-      return { [field]: search };
-    }
+  /**
+   * Save entity
+   * @param data
+   * @returns
+   */
+  async save(data: DeepPartial<T>): Promise<T> {
+    return this.repository.save(data);
   }
 
   /**
@@ -153,7 +137,7 @@ export abstract class BaseRepository<T extends Partial<BaseEntity>>
       options['relations'] = relations;
     }
     return await this.repository.findOne(options);
-  } // getOne
+  }
 
   /**
    * Create and return created entity
@@ -171,7 +155,7 @@ export abstract class BaseRepository<T extends Partial<BaseEntity>>
     data: QueryDeepPartialEntity<T>,
   ): Promise<UpdateResult> {
     return this.repository.update(id, data);
-  } // update
+  }
 
   /**
    * Update and return updated entity
@@ -187,23 +171,14 @@ export abstract class BaseRepository<T extends Partial<BaseEntity>>
   ): Promise<T | null> {
     await this.repository.update(id, data);
     return await this.getOneById(id, relations);
-  } // updateAndGetEntity
+  }
 
   async updateAll(
     criteria: number | number[],
     partialEntity: QueryDeepPartialEntity<T>,
   ): Promise<UpdateResult> {
     return await this.repository.update(criteria, partialEntity);
-  } // updateAll
-
-  /**
-   * Delete entity
-   * @param id
-   * @returns
-   */
-  async remove(id: string): Promise<DeleteResult> {
-    return await this.repository.delete(id);
-  } // remove
+  }
 
   /**
    * Soft delete
