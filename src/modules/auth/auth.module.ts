@@ -6,13 +6,14 @@ import { AuthController } from './controllers/auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy, LocalStrategy } from './strategies';
+import configuration from 'src/core/config/configuration';
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
     JwtModule.register({
-      secret: 'SECRET',
+      secret: configuration().app.jwtSecret,
     }),
   ],
   controllers: [AuthController],

@@ -14,9 +14,7 @@ import {
 import { IToken, ITokenUser } from '../interfaces/token.interface';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordUtil } from 'src/core/utils/password.util';
-
-import * as dotenv from 'dotenv';
-dotenv.config();
+import configuration from 'src/core/config/configuration';
 
 export class AuthService implements IAuthService {
   constructor(
@@ -45,11 +43,11 @@ export class AuthService implements IAuthService {
       email: user.email,
     };
 
-    const atExpireTime = process.env.JWT_SECRET_EXPS;
+    const atExpireTime = configuration().app.jwtSecretExp;
 
     const accessToken: string = this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: 36000,
+      secret: configuration().app.jwtSecret,
+      expiresIn: atExpireTime,
     });
 
     return {

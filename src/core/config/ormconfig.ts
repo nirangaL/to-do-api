@@ -1,14 +1,14 @@
 import { DataSourceOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
+import configuration from './configuration';
 dotenv.config();
 
 export const typeormConfig: DataSourceOptions = {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  type: (process.env.DATABASE_TYPE as any) || 'postgres',
-  port: parseInt(process.env.DATABASE_PORT || '5432'),
-  username: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_SCHEMA,
+  type: configuration().database.type as any,
+  port: configuration().database.port,
+  username: configuration().database.user,
+  password: configuration().database.password,
+  database: configuration().database.schema,
   charset: 'utf8mb4',
   entities: [`dist/**/*.entity{.ts,.js}`],
   migrations: [`dist/migrations/*{.ts,.js}`],
@@ -20,5 +20,5 @@ export const typeormConfig: DataSourceOptions = {
   },
   synchronize: false,
   legacySpatialSupport: false,
-  logging: !process.env.IS_APP_PROD,
+  logging: !configuration().app.isAppProd,
 };

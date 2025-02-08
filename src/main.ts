@@ -4,14 +4,13 @@ import { AppModule } from './app.module';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as dotenv from 'dotenv';
-dotenv.config();
+import configuration from './core/config/configuration';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
 
   // Set global api end point
-  app.setGlobalPrefix(`${process.env.APP_VERSION}`);
+  app.setGlobalPrefix(`${configuration().app.version}`);
 
   // Set global validation pipe
   app.useGlobalPipes(new ValidationPipe());
@@ -50,9 +49,9 @@ async function bootstrap(): Promise<void> {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup(`${process.env.APP_VERSION}/api/docs`, app, document);
+  SwaggerModule.setup(`${configuration().app.version}/api/docs`, app, document);
 
   //Setting up port
-  await app.listen(process.env.APP_PORT ?? 3000);
+  await app.listen(configuration().app.port ?? 3000);
 }
 bootstrap();
