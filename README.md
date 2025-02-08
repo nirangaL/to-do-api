@@ -31,7 +31,19 @@
 ```bash
 $ npm install
 ```
-
+# configure the environment
+```bash
+Navigate to the Root Directory
+Ensure you are in the root folder of the project.
+Create a new file named `.env`:
+Refer to the `env.example` file in the project to see all the required environment variables.
+Copy the contents of `env.example` into the newly created `.env` file.
+Replace the placeholder values in the .env file with your actual values.
+```
+## Run the migration
+```bash
+$ npm run migration:run
+```
 ## Compile and run the project
 
 ```bash
@@ -44,6 +56,10 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
+## Access to Swagger doc
+base_url/api/docs
+
 
 ## Run tests
 
