@@ -18,7 +18,7 @@ export const typeormConfig: DataSourceOptions = {
     connectTimeout: 30000, // 30 seconds
     acquireTimeout: 30000, // 30 seconds
   },
-  synchronize: true,
+  synchronize: false,
   legacySpatialSupport: false,
   logging: !process.env.IS_APP_PROD,
 };
