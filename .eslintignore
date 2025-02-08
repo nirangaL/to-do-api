@@ -1,0 +1,7 @@
+!/src/database/
+/dist
+/node_modules
+/src/migrations
+/test
+/README.md
+/build.sh
