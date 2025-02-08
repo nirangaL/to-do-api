@@ -12,5 +12,5 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   @Exclude()
-  password: string;
+  password?: string;
 }
