@@ -3,10 +3,15 @@ import { AppModule } from './app.module';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+
+  // Set global api end point
+  app.setGlobalPrefix(`${process.env.APP_VERSION}`);
+
+  await app.listen(process.env.APP_PORT ?? 3000);
+
+  app.enableCors();
 
   // Security Headers with Helmet
   app.use(helmet());
