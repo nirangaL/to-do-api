@@ -97,7 +97,7 @@ export class TodoService implements ITodoService {
 
   async getAll(userId: string, filters: FilterTodosDto): Promise<Todo[]> {
     try {
-      return await this.todoRepo.getTodos(userId, filters);
+      return await this.todoRepo.getTodos(userId, filters, filters.sortBy);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

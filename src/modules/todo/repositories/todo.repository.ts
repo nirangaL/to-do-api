@@ -19,21 +19,27 @@ export class TodoRepository
     super(todoRepo);
   }
 
-  async getTodos(userId: string, filter: FilterTodosDto): Promise<Todo[]> {
+  async getTodos(
+    userId: string,
+    filter: FilterTodosDto,
+    sortBy?: TodoStatus,
+  ): Promise<Todo[]> {
     const where: FindManyOptions<Todo>['where'] = {
       user: { id: userId },
     };
     let sort: FindManyOptions<Todo>['order'] = {};
     if (filter.completed != 'ALL') {
       where.completed = filter.completed;
+    }
 
-      // Apply sorting conditions
-
-      if (filter.completed === TodoStatus.UNCOMPLETED) {
-        sort = { createdAt: 'DESC' };
-      } else {
-        sort = { completedAt: 'ASC' };
-      }
+    // Apply sorting conditions
+    if (sortBy == TodoStatus.UNCOMPLETED) {
+      sort = {
+        createdAt: 'ASC',
+        completed: 'DESC',
+      };
+    } else {
+      sort = { completedAt: 'ASC', completed: 'ASC' };
     }
 
     const [data] = await this.getAll(where, undefined, undefined, sort);

@@ -6,4 +6,8 @@ export class FilterTodosDto {
   @ApiPropertyOptional()
   @IsOptional()
   completed: 'ALL' | TodoStatus;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  sortBy?: TodoStatus;
 }
