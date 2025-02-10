@@ -103,8 +103,8 @@ export class TodoController {
   async delete(
     @Param('id') id: string,
     @LoggedUser() authUser: AuthUser,
-  ): Promise<void> {
-    await this.todoService.delete(id, authUser.id);
+  ): Promise<boolean> {
+    return await this.todoService.delete(id, authUser.id);
   }
 
   @Get()

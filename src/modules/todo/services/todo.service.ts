@@ -74,7 +74,9 @@ export class TodoService implements ITodoService {
         return Promise.reject(new NotFoundException(`Todo not found`));
       }
 
-      const result = await this.todoRepo.softDelete(id);
+      console.log(todo);
+
+      const result = await this.todoRepo.softDelete(todo.id);
 
       return Boolean(result.affected);
     } catch (error) {
