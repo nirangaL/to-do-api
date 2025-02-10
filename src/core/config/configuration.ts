@@ -14,7 +14,7 @@ export default () => ({
   app: {
     version: process.env.APP_VERSION || 'v1',
     port: parseInt(process.env.APP_PORT || '3000'),
-    jwtSecret: process.env.JWT_SECRET,
+    jwtSecret: process.env.JWT_SECRET || 'ALIbaBa',
     jwtSecretExp: process.env.JWT_SECRET_EXP,
     isAppProd: process.env.IS_APP_PROD || false,
   },

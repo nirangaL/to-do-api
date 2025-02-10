@@ -11,6 +11,7 @@ import {
   IUserService,
   UserServiceInterface,
 } from 'src/modules/user/interfaces/user-service.interface';
+import configuration from 'src/core/config/configuration';
 dotenv.config();
 
 @Injectable()
@@ -22,22 +23,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: 'SECRET',
+      secretOrKey: configuration().app.jwtSecret,
     });
   }
 
-  async validate(payload: { sub: number; email: string }): Promise<AuthUser> {
-    const user = await this.userService.getUsrByEmail(payload.email);
-    if (!user) {
-      return Promise.reject(
-        new BadRequestException(
-          `An account with email ${payload.email} is not exists.`,
-        ),
-      );
-    }
+  validate(payload: { sub: string; email: string }): AuthUser {
     return {
-      id: user.id,
-      email: user.email,
+      id: payload.sub,
+      email: payload.email,
     };
   }
 }
